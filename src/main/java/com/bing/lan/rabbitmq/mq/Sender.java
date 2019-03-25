@@ -1,11 +1,10 @@
-package com.bing.lan.rabbitmq.hello;
+package com.bing.lan.rabbitmq.mq;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
+import static com.bing.lan.rabbitmq.RabbitConfig.BING_QUEUES;
 import static com.bing.lan.rabbitmq.RabbitConfig.HELLO_QUEUES;
 
 /**
@@ -13,14 +12,18 @@ import static com.bing.lan.rabbitmq.RabbitConfig.HELLO_QUEUES;
  * @date 2019-03-25 10:08
  */
 @Component
-public class HelloSender {
+public class Sender {
 
     @Autowired
     AmqpTemplate rabbitTemplate;
 
-    public void send() {
-        String context = "队列 hello " + new Date();
-        System.out.println("Sender : " + context);
+    public void helloSend(String context) {
+        System.out.println("队列 hello Sender : " + context);
         rabbitTemplate.convertAndSend(HELLO_QUEUES, context);
+    }
+
+    public void bingSend(Bing context) {
+        System.out.println("队列 bing Sender : " + context);
+        rabbitTemplate.convertAndSend(BING_QUEUES, context);
     }
 }
