@@ -1,4 +1,4 @@
-package com.bing.lan.rabbitmq;
+package com.bing.lan.rabbitmqspring;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
