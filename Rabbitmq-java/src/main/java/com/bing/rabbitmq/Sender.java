@@ -1,9 +1,9 @@
 package com.bing.rabbitmq;
 
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by 蓝兵 on 2019/9/23.
@@ -13,38 +13,27 @@ import java.io.IOException;
 
 public class Sender {
 
-    private final static String QUEUE_NAME = "simple_queue";
-
     public static void main(String[] args) throws IOException {
-        //创建连接
-        Connection connection = ConnectionUtil.getConnection();
         //创建通道
-        Channel channel = connection.createChannel();
+        Channel channel = RabbitMQUtil.createDeclareChannel(RabbitMQUtil.QUEUE_SIMPLE,
+                RabbitMQUtil.EXCHANGE_SIMPLE, RabbitMQUtil.ROUTING_KEY_SIMPLE);
+        //Channel channel = RabbitMQUtil.createChannel();
 
-        //声明队列
-        /**
-         *  队列名
-         *  是否持久化
-         *  是否排外  即只允许该channel访问该队列   一般等于true的话用于一个队列只能有一个消费者来消费的场景
-         *  是否自动删除  消费完删除
-         *  其他属性
-         *
-         */
-        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        for (int i = 0; i < 100; i++) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String message = "我是来自星星的大佬 " + new Date().toLocaleString();
+            //发布消息
+            //channel.basicPublish("", RabbitMQUtil.QUEUE_SIMPLE, null, message.getBytes());
 
-        //消息内容
-        /**
-         * 交换机
-         * 队列名
-         * 其他属性  路由
-         * 消息body
-         */
-        String message = "队列消息内容";
-        channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-        System.out.println(" Sent '" + message + "'");
-
+            channel.basicPublish(RabbitMQUtil.EXCHANGE_SIMPLE, RabbitMQUtil.ROUTING_KEY_SIMPLE, null, message.getBytes());
+            System.out.println("发布消息 [" + message + "]");
+        }
         //最后关闭通关和连接
         channel.close();
-        connection.close();
+        RabbitMQUtil.closeConnection();
     }
 }
