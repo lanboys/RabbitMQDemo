@@ -4,6 +4,7 @@ import com.rabbitmq.client.Channel;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by 蓝兵 on 2019/9/23.
@@ -13,7 +14,7 @@ import java.util.Date;
 
 public class Sender {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TimeoutException {
         //创建通道
         Channel channel = RabbitMQUtil.createDeclareChannel(RabbitMQUtil.QUEUE_SIMPLE,
                 RabbitMQUtil.EXCHANGE_SIMPLE, RabbitMQUtil.ROUTING_KEY_SIMPLE);

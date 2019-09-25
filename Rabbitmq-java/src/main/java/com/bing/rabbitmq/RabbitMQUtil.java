@@ -5,6 +5,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by 蓝兵 on 2019/9/24.
@@ -28,10 +29,12 @@ public class RabbitMQUtil {
             getConnection();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         }
     }
 
-    private static synchronized Connection getConnection() throws IOException {
+    private static synchronized Connection getConnection() throws IOException, TimeoutException {
         if (connection == null) {
             //连接工厂
             ConnectionFactory factory = new ConnectionFactory();
@@ -47,10 +50,8 @@ public class RabbitMQUtil {
         return connection;
     }
 
-    public static Channel createDeclareChannel(String queue, String exchange, String routingKey) throws IOException {
+    public static Channel createDeclareChannel(String queue, String exchange, String routingKey) throws IOException, TimeoutException {
         Channel channel = getConnection().createChannel();
-        boolean durable = false;
-        boolean autoDelete = false;
         /**
          *  队列名
          *  是否持久化
@@ -58,13 +59,13 @@ public class RabbitMQUtil {
          *  是否自动删除  消费完删除
          *  其他属性
          */
-        channel.queueDeclare(queue, durable, false, autoDelete, null);
-        channel.exchangeDeclare(exchange, "direct", durable, autoDelete, null);
+        channel.queueDeclare(queue, true, false, false, null);
+        channel.exchangeDeclare(exchange, "direct", true, false, null);
         channel.queueBind(queue, exchange, routingKey);
         return channel;
     }
 
-    public static Channel createChannel() throws IOException {
+    public static Channel createChannel() throws IOException, TimeoutException {
         return getConnection().createChannel();
     }
 
