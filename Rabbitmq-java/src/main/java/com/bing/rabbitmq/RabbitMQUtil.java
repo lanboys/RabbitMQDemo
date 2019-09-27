@@ -1,5 +1,6 @@
 package com.bing.rabbitmq;
 
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -50,7 +51,16 @@ public class RabbitMQUtil {
         return connection;
     }
 
-    public static Channel createDeclareChannel(String queue, String exchange, String routingKey) throws IOException, TimeoutException {
+    public static Channel createDeclareChannel(String queue, String exchange, BuiltinExchangeType exchangeType,
+            String routingKey, boolean durable) throws IOException, TimeoutException {
+
+        return createDeclareChannel(queue, exchange, exchangeType,
+                routingKey, false, durable, false);
+    }
+
+    public static Channel createDeclareChannel(String queue, String exchange, BuiltinExchangeType exchangeType,
+            String routingKey, boolean exclusive, boolean durable, boolean autoDelete)
+            throws IOException, TimeoutException {
         Channel channel = getConnection().createChannel();
         /**
          *  队列名
@@ -59,8 +69,8 @@ public class RabbitMQUtil {
          *  是否自动删除  消费完删除
          *  其他属性
          */
-        channel.queueDeclare(queue, true, false, false, null);
-        channel.exchangeDeclare(exchange, "direct", true, false, null);
+        channel.queueDeclare(queue, durable, exclusive, autoDelete, null);
+        channel.exchangeDeclare(exchange, exchangeType, durable, autoDelete, null);
         channel.queueBind(queue, exchange, routingKey);
         return channel;
     }

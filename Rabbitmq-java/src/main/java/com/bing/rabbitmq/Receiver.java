@@ -1,12 +1,17 @@
 package com.bing.rabbitmq;
 
 import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
+
+import static com.bing.rabbitmq.RabbitMQUtil.EXCHANGE_SIMPLE;
+import static com.bing.rabbitmq.RabbitMQUtil.QUEUE_SIMPLE;
+import static com.bing.rabbitmq.RabbitMQUtil.ROUTING_KEY_SIMPLE;
 
 /**
  * Created by 蓝兵 on 2019/9/23.
@@ -18,10 +23,10 @@ public class Receiver {
         //获取连接
         try {
             //获取通道
-            //Channel channel = RabbitMQUtil.createChannel(RabbitMQUtil.QUEUE_SIMPLE,
-            //        RabbitMQUtil.EXCHANGE_SIMPLE, RabbitMQUtil.ROUTING_KEY_SIMPLE);
+            Channel channel = RabbitMQUtil.createDeclareChannel(QUEUE_SIMPLE, EXCHANGE_SIMPLE,
+                    BuiltinExchangeType.TOPIC, ROUTING_KEY_SIMPLE, true);
 
-            Channel channel = RabbitMQUtil.createChannel();
+            //Channel channel = RabbitMQUtil.createChannel();
             DefaultConsumer consumer = new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope,
@@ -32,8 +37,7 @@ public class Receiver {
                 }
             };
 
-            channel.basicConsume(RabbitMQUtil.QUEUE_SIMPLE, true, consumer);
-
+            channel.basicConsume(QUEUE_SIMPLE, true, consumer);
         } catch (IOException e) {
             e.printStackTrace();
             RabbitMQUtil.closeConnection();

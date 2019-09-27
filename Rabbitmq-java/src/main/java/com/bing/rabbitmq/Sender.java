@@ -16,11 +16,11 @@ public class Sender {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         //创建通道
-        Channel channel = RabbitMQUtil.createDeclareChannel(RabbitMQUtil.QUEUE_SIMPLE,
-                RabbitMQUtil.EXCHANGE_SIMPLE, RabbitMQUtil.ROUTING_KEY_SIMPLE);
-        //Channel channel = RabbitMQUtil.createChannel();
+        //Channel channel = RabbitMQUtil.createDeclareChannel(RabbitMQUtil.QUEUE_SIMPLE,
+        //        RabbitMQUtil.EXCHANGE_SIMPLE, RabbitMQUtil.ROUTING_KEY_SIMPLE);
+        Channel channel = RabbitMQUtil.createChannel();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 20; i++) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
