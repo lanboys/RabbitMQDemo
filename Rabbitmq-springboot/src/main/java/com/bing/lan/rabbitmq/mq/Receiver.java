@@ -1,10 +1,10 @@
-package com.bing.lan.rabbitmqspring.mq;
+package com.bing.lan.rabbitmq.mq;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import static com.bing.lan.rabbitmqspring.RabbitConfig.BING_QUEUES;
-import static com.bing.lan.rabbitmqspring.RabbitConfig.HELLO_QUEUES;
+import static com.bing.lan.rabbitmq.RabbitConfig.BING_QUEUES;
+import static com.bing.lan.rabbitmq.RabbitConfig.HELLO_QUEUES;
 
 /**
  * @author lan_bing

@@ -1,4 +1,4 @@
-package com.bing.lan.rabbitmqspring.mq;
+package com.bing.lan.rabbitmq.mq;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.bing.lan.rabbitmqspring;
+package com.bing.lan.rabbitmq;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RabbitmqSpringApplicationTests {
+public class RabbitmqSpringbootApplicationTests {
 
     @Test
     public void contextLoads() {
