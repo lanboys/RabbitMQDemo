@@ -65,8 +65,8 @@ public class RabbitMQUtil {
         /**
          *  队列名
          *  是否持久化
-         *  是否排外  即只允许该channel访问该队列   一般等于true的话用于一个队列只能有一个消费者来消费的场景
-         *  是否自动删除  消费完删除
+         *  是否排外  即只允许该连接(Connection)【而不是 channel】下的消费者, 绑定该队列, 但是不限制发送消息方的 channel 和 connection
+         *  是否自动删除  消费完，并且消费者断开连接后自动删除，全部消息过期，不会自动删除
          *  其他属性
          */
         channel.queueDeclare(queue, durable, exclusive, autoDelete, null);

@@ -16,14 +16,14 @@ import java.util.Map;
  * Created by 蓝兵 on 2019/9/30.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:applicationContext.xml" })
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
 public class SpringRabbitTest extends AbstractJUnit4SpringContextTests {
 
     @Autowired
     private AmqpTemplate amqpTemplate;
 
     @Test
-    public void sendMessage(){
+    public void sendMessage() {
         Map<String, Object> log = new HashMap<String, Object>();
         log.put("level", "info");
         log.put("timestamp", new Date());
