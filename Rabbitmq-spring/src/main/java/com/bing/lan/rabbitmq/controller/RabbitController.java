@@ -29,10 +29,12 @@ public class RabbitController {
         Map<String, Object> log = new HashMap<String, Object>();
         log.put("level", "info");
         log.put("timestamp", new Date());
-        log.put("operateId", 666);
         log.put("msg", "修改密码，修改前密码：123456，修改后密码：111111");
 
-        amqpTemplate.convertAndSend("queueTestKey", log);
+        for (int i = 0; i < 50; i++) {
+            log.put("operateId", i);
+            amqpTemplate.convertAndSend("queueTestKey", log);
+        }
         logger.info("发送消息：{}", log);
         return new Date().toLocaleString() + " 发送消息成功：" + log;
     }

@@ -7,7 +7,7 @@
      http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
      http://www.springframework.org/schema/rabbit
-     http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+     http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
 
     <!--配置connection-factory，指定连接rabbit server参数 -->
     <rabbit:connection-factory id="connectionFactory"
@@ -41,11 +41,18 @@
     </rabbit:direct-exchange>
 
     <!-- 消息接收者 -->
-    <bean id="messageReceiver" class="com.bing.lan.rabbitmq.MessageConsumer"/>
+    <bean id="messageReceiver" class="com.bing.lan.rabbitmq.MessageListenerReceiver"/>
 
     <!-- queue listener  自动监听队列，当有消息到达时会通知监听在对应的队列上的监听对象-->
     <rabbit:listener-container connection-factory="connectionFactory">
         <rabbit:listener queues="queueTest" ref="messageReceiver"/>
     </rabbit:listener-container>
+
+    <!-- 开启注解 -->
+    <rabbit:annotation-driven/>
+    <bean id="rabbitListenerContainerFactory"
+          class="org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory">
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>
 
 </beans>
